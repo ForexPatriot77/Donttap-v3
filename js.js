@@ -663,8 +663,6 @@ function zoom() {
   Best.style.top = sqsize / 3.6 + "px";
   Best.style.fontSize = Math.round(sqsize / 5) + "px";
 
-  }
-
 }
 
 function clickTile(e) {
