@@ -73,10 +73,10 @@ document.body.appendChild(zom);
 
 slider.id="slider";
 slider.type='range';
-slider.min=122;
-slider.max=186;
-slider.value=zoomN || 156;
-slider.step=32;
+slider.min=50;
+slider.max=200;
+slider.value=Math.min(200, Math.max(50, Number(zoomN) || 156));
+slider.step=1;
 document.body.appendChild(slider);
 
 button.innerHTML="Frenzy";
@@ -603,50 +603,65 @@ zoom();
 
 //Event Listener Functions
 function zoom() {
+  zoomI = Number(slider.value);
+  sqsizeD = Math.round(window.innerHeight * 0.108);
+  sqsize = Math.round(sqsizeD * zoomI / 100);
+  w = Math.round(sqsize * 4);
+  x0 = Math.round(window.innerWidth / 2 - w / 2);
+  x1 = w;
+  y1 = w;
 
-  for (var i=0;i<2;i++) {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  canvasLines();
+  canvasBlack();
 
-    sqsizeD=Math.round(window.innerHeight*0.108);
-    sqsize=Math.round(sqsizeD*zoomI/100);
-    w=Math.round(sqsize*4);
-    x0=Math.round(window.innerWidth/2-w/2);
-    x1=w;
-    y1=w;
-    zoomI=slider.value;
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    canvasLines();
-    canvasBlack();
-    div.style.width=w;
-    div.style.height=Math.round(w*1.5);
-    div.style.left=x0+"px";
-    div.style.top=0+"px";
-    score.style.top=sqsize/4+"px";
-    score.style.fontSize=Math.round(sqsize/1.4)+'px';
-    time.style.padding=sqsize/8+'px';
-    time.style.top=0+"px";
-    time.style.fontSize=Math.round(sqsize/1.8)+'px';
-    if (err===1) {
-      cXX=cXXo/wOLD*w;
-      cYY=cYYo/wOLD*w;
-      drawError();
-    }
-    pressKey.style.top=w*1.07+"px";
-    pressKey.style.fontSize=Math.round(sqsize/3)+'px';
-    setCookie("zoom", slider.value);
-    if (x0<200) {
-      slider.style.transform ="rotate(90deg)";
-      slider.style.marginTop=100+"px";
-      slider.style.marginLeft=-80+"px";
-      button.style.transform ="rotate(90deg)";
-      button.style.marginTop=200+"px";
-      button.style.marginLeft=-80+"px";
-      zom.style.marginLeft=-75+"px";
-      button.style.paddingRight=20+"px";
-    }
-    zom.innerHTML="-"+slider.value+"+";
-    Best.style.left= "75%";
-    Best.style.top=sqsize/3.6+"px";
-    Best.style.fontSize=Math.round(sqsize/5)+'px';
+  div.style.width = w;
+  div.style.height = Math.round(w * 1.5);
+  div.style.left = x0 + "px";
+  div.style.top = "0px";
+
+  score.style.top = sqsize / 4 + "px";
+  score.style.fontSize = Math.round(sqsize / 1.4) + "px";
+
+  time.style.padding = sqsize / 8 + "px";
+  time.style.top = "0px";
+  time.style.fontSize = Math.round(sqsize / 1.8) + "px";
+
+  if (err === 1) {
+    cXX = cXXo / wOLD * w;
+    cYY = cYYo / wOLD * w;
+    drawError();
+  }
+
+  pressKey.style.top = w * 1.07 + "px";
+  pressKey.style.fontSize = Math.round(sqsize / 3) + "px";
+
+  setCookie("zoom", slider.value);
+
+  if (x0 < 200) {
+    slider.style.transform = "rotate(90deg)";
+    slider.style.marginTop = "100px";
+    slider.style.marginLeft = "-80px";
+    button.style.transform = "rotate(90deg)";
+    button.style.marginTop = "200px";
+    button.style.marginLeft = "-80px";
+    zom.style.marginLeft = "-75px";
+    button.style.paddingRight = "20px";
+  } else {
+    slider.style.transform = "";
+    slider.style.marginTop = "";
+    slider.style.marginLeft = "";
+    button.style.transform = "";
+    button.style.marginTop = "";
+    button.style.marginLeft = "";
+    zom.style.marginLeft = "";
+    button.style.paddingRight = "";
+  }
+
+  zom.innerHTML = "-" + slider.value + "+";
+  Best.style.left = "75%";
+  Best.style.top = sqsize / 3.6 + "px";
+  Best.style.fontSize = Math.round(sqsize / 5) + "px";
 
   }
 
