@@ -87,7 +87,7 @@ button.style.position='absolute';
 
 let patr=document.createElement("a");
 document.body.appendChild(patr);
-patr.innerHTML='<a id="patr" title="SpiffyCheese" target="_blank" rel="noopener noreferrer" href="https://youtube.com/playlist?list=PL5SlP-XQzZTJHhsorC8pu_gpwg4yXDF4d" style="display: block; position: absolute; top: 95%; left: 20px;">SpiffyCheese</a>'
+patr.innerHTML='<a id="patr" title="ForexPatriot77" target="_blank" rel="noopener noreferrer" href="https://github.com/ForexPatriot77/Donttap-v3" style="display: block; position: absolute; top: 95%; left: 20px;">ForexPatriot77</a>'
 
 let recordsB=document.createElement("BUTTON");
 recordsB.innerHTML="Records";
@@ -519,55 +519,89 @@ canvasLines()
 
 let p=0;
 function refresh(p) {
-  bonus=0;
+  bonus = 0;
   contextB.clearRect(0, 0, canvasB.width, canvasB.height);
-  sc=0;
-  good=0;
-  err=0;
-  score.innerHTML="0";
-  time.innerHTML="30";
-  if (freRec.length>0) Best.innerHTML="HI-SCORE<br>"+freRec[0].record;
-  else {
-    Best.innerHTML="HI-SCORE<br>";
-    clearInterval(timerGP);
-    if (p===0) {
-    clearInterval(timerGO);
-    timerWent=false;
-    timeL=30;
-    timer();
-    horiAr[0]=Math.floor(Math.random() * 4);
-    vertAr[0]=Math.floor(Math.random() * 4);
-    horiAr[1]=horiAr[0];
-    vertAr[1]=vertAr[0];
-    while (horiAr[1] === horiAr[0] && vertAr[1] === vertAr[0]) {
-      horiAr[1]=Math.floor(Math.random() * 4);
-      vertAr[1]=Math.floor(Math.random() * 4);
-    }
-    horiAr[2]=horiAr[0];
-    vertAr[2]=vertAr[0];
-      while ((horiAr[2] === horiAr[0] && vertAr[2] === vertAr[0]) || (horiAr[2] === horiAr[1] && vertAr[2] === vertAr[1])) {
-        horiAr[2]=Math.floor(Math.random() * 4);
-        vertAr[2]=Math.floor(Math.random() * 4);
-      }
-    drawBlack();
-    pressKey.innerHTML="1";
-    }
+  sc = 0;
+  good = 0;
+  err = 0;
+  score.innerHTML = "0";
+  time.innerHTML = "30";
+
+  if (freRec.length > 0) {
+    Best.innerHTML = "HI-SCORE<br>" + freRec[0].record;
+  } else {
+    Best.innerHTML = "HI-SCORE<br>";
   }
+
+  clearInterval(timerGP);
+
+  if (p === 0) {
+    clearInterval(timerGO);
+
+    timerWent = false;
+    timeL = 30;
+    timer();
+
+    horiAr[0] = Math.floor(Math.random() * 4);
+    vertAr[0] = Math.floor(Math.random() * 4);
+
+    horiAr[1] = horiAr[0];
+    vertAr[1] = vertAr[0];
+
+    while (
+      horiAr[1] === horiAr[0] &&
+      vertAr[1] === vertAr[0]
+    ) {
+      horiAr[1] = Math.floor(Math.random() * 4);
+      vertAr[1] = Math.floor(Math.random() * 4);
+    }
+
+    horiAr[2] = horiAr[0];
+    vertAr[2] = vertAr[0];
+
+    while (
+      (horiAr[2] === horiAr[0] && vertAr[2] === vertAr[0]) ||
+      (horiAr[2] === horiAr[1] && vertAr[2] === vertAr[1])
+    ) {
+      horiAr[2] = Math.floor(Math.random() * 4);
+      vertAr[2] = Math.floor(Math.random() * 4);
+    }
+
+    drawBlack();
+    pressKey.innerHTML = "1";
+  }
+
   if (PaC != "") {
-    patt=Math.abs(Number(PaC)-1);
+    patt = Math.abs(Number(PaC) - 1);
     button.click();
-  } else patt=0;
+  } else {
+    patt = 0;
+  }
 }
 
 function FreR() {
-  today=new Date();
+  if (sc > 0) {
+    today = new Date();
 
-  freTem=subscriber();
-  freRec.push(freTem);
-  freRec.sort((a, b) => (a.record < b.record) ? 1 : -1);
-  if (freRec.length>10) freRec.length=40;
-  bake_cookie("records", freRec);
+    const freTem = subscriber();
+    freRec.push(freTem);
+
+    freRec.sort((a, b) => b.record - a.record);
+
+    if (freRec.length > 10) {
+      freRec.length = 10;
+    }
+
+    bake_cookie("records", freRec);
+  }
+
   freList();
+
+  if (freRec.length > 0) {
+    Best.innerHTML = "HI-SCORE<br>" + freRec[0].record;
+  } else {
+    Best.innerHTML = "HI-SCORE";
+  }
 }
 
 function subscriber() {
@@ -583,19 +617,28 @@ function timer() {
 }
 
 function timerTick() {
-  timeL=(timeL-0.1).toFixed(1);
-  if (bonus>3) bonus=Math.round((bonus-3)*10)/10;
-  else bonus=0.1;
-  pressKey.innerHTML=Math.ceil(bonus/20);
-  time.innerHTML=timeL;
+  timeL = (timeL - 0.1).toFixed(1);
+
+  if (bonus > 3) bonus = Math.round((bonus - 3) * 10) / 10;
+  else bonus = 0.1;
+
+  pressKey.innerHTML = Math.ceil(bonus / 20);
+  time.innerHTML = timeL;
+
   if (timeL <= 0) {
     clearInterval(timerGO);
-    time.innerHTML="0";pressKey.innerHTML="Space to Start";
+    timeL = 0;
+    time.innerHTML = "0";
+    pressKey.innerHTML = "Space to Start";
     FreR();
+    return;
   }
+
   if (err === 1) {
     clearInterval(timerGO);
-    pressKey.innerHTML="Space to Start";
+    pressKey.innerHTML = "Space to Start";
+    FreR();
+    return;
   }
 }
 
