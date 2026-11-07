@@ -281,13 +281,23 @@ function bake_cookie(name, value) {
 }
 
 function read_cookie(name) {
-  let result = document.cookie.match(
-    new RegExp(name + "=([^;]+)")
-  );
+  // Match the complete cookie name and ignore stale or malformed saved data.
+  const prefix = name + "=";
+  const cookie = document.cookie
+    .split(";")
+    .map(part => part.trim())
+    .find(part => part.startsWith(prefix));
 
-  result && (result = JSON.parse(result[1]));
+  if (!cookie) {
+    return null;
+  }
 
-  return result;
+  try {
+    return JSON.parse(decodeURIComponent(cookie.slice(prefix.length)));
+  } catch (error) {
+    console.warn("Ignoring invalid saved cookie:", name, error);
+    return null;
+  }
 }
 
 
