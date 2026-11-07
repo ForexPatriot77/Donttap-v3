@@ -133,7 +133,7 @@ patr.title = "ForexPatriot77";
 patr.href = "https://github.com/ForexPatriot77/Donttap-v3";
 patr.target = "_blank";
 patr.rel = "noopener noreferrer";
-patr.textContent = "ForexPatriot77";
+patr.innerHTML = 'GitHub Repo <sub>(ForexPatriot77)</sub>';
 patr.style.display = "block";
 patr.style.position = "absolute";
 patr.style.top = "95%";
@@ -181,7 +181,7 @@ Best.style.top = sqsize / 3.6 + "px";
 Best.style.zIndex = 11;
 Best.style.marginTop = "0px";
 Best.style.pointerEvents = "none";
-Best.style.color = "#0000FF";
+Best.style.color = "#800020";
 Best.style.textAlign = "center";
 Best.style.fontSize = Math.round(sqsize / 5) + "px";
 div.appendChild(Best);
@@ -192,13 +192,13 @@ score.style.position = "center";
 score.style.top = sqsize / 4 + "px";
 score.style.zIndex = 11;
 score.style.pointerEvents = "none";
-score.style.color = "#00FFFF";
+score.style.color = "#800020";
 score.style.textAlign = "center";
 score.style.fontSize = Math.round(sqsize / 1.4) + "px";
 div.appendChild(score);
 
 pressKey.id = "pressKey";
-pressKey.innerHTML = "Space to Start";
+pressKey.innerHTML = "SPACE TO START";
 pressKey.style.position = "relative";
 pressKey.style.top = w * 1.07 + "px";
 pressKey.style.zIndex = 11;
@@ -214,7 +214,7 @@ time.style.padding = sqsize / 8 + "px";
 time.style.top = "0px";
 time.style.zIndex = 11;
 time.style.pointerEvents = "none";
-time.style.color = "purple";
+time.style.color = "#0000FF";
 time.style.textAlign = "left";
 time.style.fontSize = Math.round(sqsize / 1.8) + "px";
 div.appendChild(time);
@@ -584,7 +584,7 @@ function refresh(p) {
 
     timer();
   } else {
-    pressKey.innerHTML = "Space to Start";
+    pressKey.innerHTML = "SPACE TO START";
   }
 }
 
@@ -632,7 +632,7 @@ function FreR() {
     }
   }
 
-  pressKey.innerHTML = "Space to Start";
+  pressKey.innerHTML = "SPACE TO START";
 }
 
 function subscriber() {
