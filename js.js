@@ -42,6 +42,11 @@ let cXX, cYY;
 let horiAr = [];
 let vertAr = [];
 
+// Create both canvases before the game tries to position or draw on them.
+let canvas = document.createElement("canvas");
+let canvasB = document.createElement("canvas");
+let contextB = canvasB.getContext("2d");
+
 let context;
 let zoomI, wOLD, cXXo, cYYo;
 
