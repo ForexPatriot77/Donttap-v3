@@ -46,10 +46,10 @@ body { margin: 0;
   font-family: 'Allerta Stencil';
 }
 
-#PressKey {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+#pressKey {
   font-family: 'Allerta Stencil';
-  color: #00e000 !important;
+  color: #000000 !important;
+  text-transform: uppercase;
 }
 
 #switch {
@@ -125,7 +125,11 @@ body { margin: 0;
 #patr{
   color: #0000FF;
   text-decoration: none;
-  font-size:24px;
+  font-size:18px;
+}
+
+#patr sub {
+  font-size: smaller;
 }
 
 #patrLink:hover{
