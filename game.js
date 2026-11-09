@@ -711,7 +711,7 @@ function timerTick() {
     Math.round((timeL - 0.1) * 10) / 10
   );
 
-  if (gameMode === "frenzy") {
+  if (gameMode === "frenzy" || gameMode === "cheat") {
     if (bonus > 3) {
       bonus = Math.round((bonus - 3) * 10) / 10;
     } else {
