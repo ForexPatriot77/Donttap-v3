@@ -125,7 +125,7 @@ document.body.appendChild(zom);
 
 document.body.appendChild(slider);
 
-button.innerHTML = "Endurance";
+button.innerHTML = "Frenzy";
 document.body.appendChild(button);
 button.id = "switch";
 button.style.display = "block";
@@ -402,12 +402,16 @@ function drawSquares() {
   CoX = Math.floor((cx - x0) / sqsize);
   CoY = Math.floor((cy - w / 4) / sqsize);
 
-  // In Cheat, every tile is valid: tap anywhere on the 4x4 board.
+  // Cheat is Frenzy with the black tiles removed: every white tile is valid.
+  // Successful taps build the same escalating bonus as Frenzy.
   if (gameMode === "cheat") {
     if (CoX >= 0 && CoX < 4 && CoY >= 0 && CoY < 4) {
-      sc++;
-      score.innerHTML = sc;
-      pressKey.innerHTML = "1";
+      if (bonus < 92) {
+        bonus += 8;
+      } else {
+        bonus = 100;
+      }
+      Calculatescore();
     }
     return;
   }
@@ -851,17 +855,17 @@ function frenzy() {
   runEnded = true;
   timerWent = true;
 
-  // Cycle through all three modes without changing the current game until started.
+  // The button displays the currently selected mode.
   if (gameMode === "frenzy") {
     gameMode = "endurance";
-    button.innerText = "Cheat";
   } else if (gameMode === "endurance") {
     gameMode = "cheat";
-    button.innerText = "Frenzy";
   } else {
     gameMode = "frenzy";
-    button.innerText = "Endurance";
   }
+
+  button.innerText =
+    gameMode.charAt(0).toUpperCase() + gameMode.slice(1);
 
   patternMode = false;
   refresh(1);
