@@ -1,7 +1,7 @@
 
 // ========================================
 // Donttap v3 — ForexPatriot77
-// Modes: Frenzy and Endurance
+// Modes: Frenzy, Endurance, and Cheat
 // ========================================
 
 // ---------- Game settings ----------
@@ -11,6 +11,7 @@ let patternMode = false;
 
 let freRec = [];
 let endRec = [];
+let cheatRec = [];
 
 let savedRecords = read_cookie("records");
 if (Array.isArray(savedRecords)) {
@@ -21,6 +22,12 @@ try {
   endRec = JSON.parse(localStorage.getItem("recordsEndurance")) || [];
 } catch (e) {
   endRec = [];
+}
+
+try {
+  cheatRec = JSON.parse(localStorage.getItem("recordsCheat")) || [];
+} catch (e) {
+  cheatRec = [];
 }
 
 let key;
@@ -368,6 +375,9 @@ function canvasBlack() {
 function drawBlack() {
   contextB.clearRect(0, 0, canvasB.width, canvasB.height);
 
+  // Cheat mode intentionally has no black tiles.
+  if (gameMode === "cheat") return;
+
   if (horiAr.length < 3 || vertAr.length < 3) {
     return;
   }
@@ -391,6 +401,16 @@ function drawBlack() {
 function drawSquares() {
   CoX = Math.floor((cx - x0) / sqsize);
   CoY = Math.floor((cy - w / 4) / sqsize);
+
+  // In Cheat, every tile is valid: tap anywhere on the 4x4 board.
+  if (gameMode === "cheat") {
+    if (CoX >= 0 && CoX < 4 && CoY >= 0 && CoY < 4) {
+      sc++;
+      score.innerHTML = sc;
+      pressKey.innerHTML = "1";
+    }
+    return;
+  }
 
   good = 0;
 
@@ -523,6 +543,15 @@ function endList() {
   }
 }
 
+function cheatList() {
+  rec.innerHTML = "Cheat:<br>";
+
+  for (let z = 0; z < cheatRec.length; z++) {
+    rec.innerHTML += cheatRec[z].record;
+    rec.innerHTML += "<br>";
+  }
+}
+
 
 // ---------- Game reset and initialization ----------
 
@@ -546,12 +575,14 @@ function refresh(p) {
 
   if (gameMode === "endurance") {
     endList();
-
     Best.innerHTML = "HI-SCORE<br>" +
       (endRec.length > 0 ? endRec[0].record : "");
+  } else if (gameMode === "cheat") {
+    cheatList();
+    Best.innerHTML = "HI-SCORE<br>" +
+      (cheatRec.length > 0 ? cheatRec[0].record : "");
   } else {
     freList();
-
     Best.innerHTML = "HI-SCORE<br>" +
       (freRec.length > 0 ? freRec[0].record : "");
   }
@@ -560,7 +591,7 @@ function refresh(p) {
     horiAr = [];
     vertAr = [];
 
-    for (let i = 0; i < 3; i++) {
+    if (gameMode !== "cheat") for (let i = 0; i < 3; i++) {
       let newX;
       let newY;
 
@@ -604,7 +635,14 @@ function FreR() {
       date: ""
     };
 
-    if (gameMode === "endurance") {
+    if (gameMode === "cheat") {
+      cheatRec.push(record);
+      cheatRec.sort((a, b) => b.record - a.record);
+      cheatRec = cheatRec.slice(0, 10);
+      localStorage.setItem("recordsCheat", JSON.stringify(cheatRec));
+      cheatList();
+      Best.innerHTML = "HI-SCORE<br>" + cheatRec[0].record;
+    } else if (gameMode === "endurance") {
       endRec.push(record);
 
       endRec.sort((a, b) => b.record - a.record);
@@ -810,12 +848,15 @@ function recordsBf() {
 
 function frenzy() {
   clearInterval(timerGO);
-
   runEnded = true;
   timerWent = true;
 
+  // Cycle through all three modes without changing the current game until started.
   if (gameMode === "frenzy") {
     gameMode = "endurance";
+    button.innerText = "Cheat";
+  } else if (gameMode === "endurance") {
+    gameMode = "cheat";
     button.innerText = "Frenzy";
   } else {
     gameMode = "frenzy";
@@ -823,9 +864,7 @@ function frenzy() {
   }
 
   patternMode = false;
-
   refresh(1);
-
   button.blur();
 }
 
@@ -851,7 +890,6 @@ zoom();
 
 if (gameMode === "frenzy") {
   freList();
-
   Best.innerHTML = "HI-SCORE<br>" +
     (freRec.length > 0 ? freRec[0].record : "");
 }
