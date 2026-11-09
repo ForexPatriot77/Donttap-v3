@@ -402,16 +402,10 @@ function drawSquares() {
   CoX = Math.floor((cx - x0) / sqsize);
   CoY = Math.floor((cy - w / 4) / sqsize);
 
-  // Cheat is Frenzy with the black tiles removed: every white tile is valid.
-  // Successful taps build the same escalating bonus as Frenzy.
+  // Cheat is Frenzy with the black tiles removed: every board tile is valid.
   if (gameMode === "cheat") {
     if (CoX >= 0 && CoX < 4 && CoY >= 0 && CoY < 4) {
-      if (bonus < 92) {
-        bonus += 8;
-      } else {
-        bonus = 100;
-      }
-      Calculatescore();
+      awardFrenzyScore();
     }
     return;
   }
@@ -442,14 +436,10 @@ function drawSquares() {
       drawBlack();
 
       if (gameMode === "frenzy") {
-        if (bonus < 92) {
-          bonus += 8;
-        } else {
-          bonus = 100;
-        }
+        awardFrenzyScore();
+      } else {
+        Calculatescore();
       }
-
-      Calculatescore();
       good = 1;
       break;
     }
@@ -500,6 +490,18 @@ function drawError() {
 
 
 // ---------- Scoring ----------
+
+// Shared Frenzy-style combo scoring for Frenzy and Cheat.
+// Every valid tap raises the bonus; faster tapping outpaces its timed decay.
+function awardFrenzyScore() {
+  if (bonus < 92) {
+    bonus += 8;
+  } else {
+    bonus = 100;
+  }
+
+  Calculatescore();
+}
 
 function Calculatescore() {
   if (gameMode === "endurance") {
